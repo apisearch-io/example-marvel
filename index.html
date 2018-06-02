@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>AS UI - Suggested search</title>
+    <title>Apisearch Marvel example</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.0/css/bulma.min.css">
     <script src="https://cdn.jsdelivr.net/npm/apisearch-ui/dist/apisearch-ui.min.js"></script>
@@ -11,6 +11,17 @@
         em {
             background: #b4acff;
             font-style: inherit;
+        }
+
+        .as-searchInput__clearSearch {
+            position: absolute;
+            top: 25px;
+            right: 40px;
+            cursor: pointer;
+        }
+
+        .as-pagination__item {
+            cursor: pointer;
         }
     </style>
 </head>
@@ -48,7 +59,7 @@
             >
                 <span class="icon" style="color: #333;">
                   <i class="fa fa-lg fa-github"></i>
-                </span>
+                </span>&nbsp;Fork me!
             </a>
         </div>
     </nav>
@@ -103,7 +114,7 @@
         </div>
         {{^items}}
         <div class="notification">
-            Empty set of results for <b>{{query}}</b> ðŸ™‰
+            Empty set of results for <b>{{query}}</b>
         </div>
         {{/items}}
     </script>
@@ -133,11 +144,13 @@
                 target: '.search',
                 placeholder: 'Search something...',
                 autofocus: true,
+                startSearchOn: 3,
                 classNames: {
                     container: 'column',
                     input: 'input'
                 }
             }),
+        /*
             ui.widgets.sortBy({
                 target: '.sort-by',
                 classNames: {
@@ -148,6 +161,7 @@
                     {name: 'Newest', value: 'year:desc'}
                 ]
             }),
+        */
             ui.widgets.multipleFilter({
                 target: '.multiple-filter-featured-char',
                 name: 'featured_char',
