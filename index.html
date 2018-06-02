@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AS UI - Suggested search</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.0/css/bulma.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/apisearch-ui/dist/apisearch-ui.min.js"></script>
+
+    <!-- custom styles -->
+    <style>
+        em {
+            background: #b4acff;
+            font-style: inherit;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar is-light" role="navigation" aria-label="main navigation">
+        <!-- Logo -->
+        <div class="navbar-brand">
+            <a class="navbar-item" href="https://apisearch.io">
+                <img class="has-text-centered"
+                     src="http://apisearch.io/assets/media/apisearch-long-logo.png"
+                     width="200px"
+                >
+            </a>
+        </div>
+
+        <!-- SearchInput -->
+        <div class="search navbar-item"></div>
+
+        <!-- Information -->
+        <div class="information navbar-item"></div>
+
+        <!-- End -->
+        <div class="navbar-end">
+            <!-- Clear filters -->
+            <div class="navbar-item clear-filters"></div>
+
+            <!-- Sort by -->
+            <div class="navbar-item sort-by"></div>
+
+            <a class="navbar-item is-hidden-desktop-only"
+               href="https://github.com/alexhoma/javascript-search-ui"
+               target="_blank"
+            >
+                <span class="icon" style="color: #333;">
+                  <i class="fa fa-lg fa-github"></i>
+                </span>
+            </a>
+        </div>
+    </nav>
+
+    <!-- Result -->
+    <div class="container is-fluid">
+        <div class="columns" style="margin-top: 1rem">
+            <div class="column is-2">
+                <div class="multiple-filter-featured-char" style="margin-bottom: 1rem"></div>
+                <div class="multiple-filter-supporting-char" style="margin-bottom: 1rem"></div>
+                <div class="multiple-filter-antagonists"></div>
+            </div>
+            <div class="column">
+                <div class="columns">
+                    <div class="column is-one-quarter"></div>
+                    <div class="pagination column"></div>
+                    <div class="column is-one-quarter"></div>
+                </div>
+                <div class="columns">
+                    <div class="result column"></div>
+                </div>
+            </div>
+            <div class="column is-2">
+                <div class="multiple-filter-sagas" style="margin-bottom: 1rem"></div>
+                <div class="multiple-filter-races-species"></div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/template" id="result-search-tpl">
+        <div class="columns is-multiline is-variable">
+            {{#items}}
+            <div class="column is-narrow" style="width: 200px;">
+                <div class="card" style="border-radius: .2rem">
+                    <div class="card-image">
+                        <figure class="image">
+                            <img src="{{metadata.img}}" alt="Placeholder image">
+                        </figure>
+                    </div>
+                    <div class="card-content" style="padding: .5rem">
+                        <div class="media">
+                            <div class="media-content">
+                                <strong>
+                                    {{{metadata.title}}}
+                                </strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {{/items}}
+        </div>
+        {{^items}}
+        <div class="notification">
+            Empty set of results for <b>{{query}}</b> ðŸ™‰
+        </div>
+        {{/items}}
+    </script>
+
+    <script type="text/template" id="multiple-filter-item-template">
+        <input type="checkbox" id="filter_{{values.id}}"{{#isActive}} checked="checked"{{/isActive}}>
+        <label for="filter_{{values.id}}">{{{values.name}}} ({{n}})</label>
+    </script>
+
+    <script type="text/template" id="information-container-template">
+        <span class="tag is-primary">
+            <i class="fa fa-bolt"></i> &nbsp; Found {{total_hits}}!
+        </span>
+    </script>
+
+    <script type="text/javascript">
+        // UI Instance
+        const ui = apisearchUI({
+            appId: '5d1f2b2e966b',
+            indexId: '6c4f259c9124',
+            token: 'a39346d8-1843-46be-817c-461a181e8688',
+        });
+
+        // Widgets setup
+        ui.addWidgets(
+            ui.widgets.searchInput({
+                target: '.search',
+                placeholder: 'Search something...',
+                autofocus: true,
+                classNames: {
+                    container: 'column',
+                    input: 'input'
+                }
+            }),
+            ui.widgets.sortBy({
+                target: '.sort-by',
+                classNames: {
+                    container: 'select'
+                },
+                options: [
+                    {name: 'Oldest', value: 'year:asc'},
+                    {name: 'Newest', value: 'year:desc'}
+                ]
+            }),
+            ui.widgets.multipleFilter({
+                target: '.multiple-filter-featured-char',
+                name: 'featured_char',
+                filterField: 'featured_chars_id',
+                aggregationField: 'featured_chars_data',
+                applicationType: 8,
+                fetchLimit: 30,
+                viewLimit: 12,
+                sortBy: ['_count', 'desc'],
+                template: {
+                    top: '<i class="fa fa-github"></i>&nbsp;Featured Character',
+                    item: document.getElementById('multiple-filter-item-template').text,
+                    showMore: '<button class="button"><i class="fa fa-plus"></i>&nbsp;Show more</button>',
+                    showLess: '<button class="button"><i class="fa fa-minus"></i>&nbsp;Show less</button>',
+                },
+                classNames: {
+                    container: 'panel',
+                    top: 'panel-heading',
+                    item: 'panel-block',
+                    showMoreContainer: 'panel-block'
+                }
+            }),
+            ui.widgets.multipleFilter({
+                target: '.multiple-filter-supporting-char',
+                name: 'supporting_char',
+                filterField: 'supporting_chars_id',
+                aggregationField: 'supporting_chars_data',
+                applicationType: 8,
+                fetchLimit: 30,
+                viewLimit: 12,
+                sortBy: ['_count', 'desc'],
+                template: {
+                    top: '<i class="fa fa-paperclip"></i>&nbsp;Supporting Character',
+                    item: document.getElementById('multiple-filter-item-template').text,
+                    showMore: '<button class="button"><i class="fa fa-plus"></i>&nbsp;Show more</button>',
+                    showLess: '<button class="button"><i class="fa fa-minus"></i>&nbsp;Show less</button>',
+                },
+                classNames: {
+                    container: 'panel',
+                    top: 'panel-heading',
+                    item: 'panel-block',
+                    showMoreContainer: 'panel-block'
+                }
+            }),
+            ui.widgets.multipleFilter({
+                target: '.multiple-filter-antagonists',
+                name: 'antagonists',
+                filterField: 'antagonists_id',
+                aggregationField: 'antagonists_data',
+                applicationType: 8,
+                fetchLimit: 30,
+                viewLimit: 12,
+                sortBy: ['_count', 'desc'],
+                template: {
+                    top: '<i class="fa fa-thumbs-down"></i>&nbsp;Antagonists',
+                    item: document.getElementById('multiple-filter-item-template').text,
+                    showMore: '<button class="button"><i class="fa fa-plus"></i>&nbsp;Show more</button>',
+                    showLess: '<button class="button"><i class="fa fa-minus"></i>&nbsp;Show less</button>',
+                },
+                classNames: {
+                    container: 'panel',
+                    top: 'panel-heading',
+                    item: 'panel-block',
+                    showMoreContainer: 'panel-block'
+                }
+            }),
+            ui.widgets.multipleFilter({
+                target: '.multiple-filter-races-species',
+                name: 'races_species',
+                filterField: 'races_species_id',
+                aggregationField: 'races_species_data',
+                applicationType: 8,
+                fetchLimit: 30,
+                viewLimit: 12,
+                sortBy: ['_count', 'desc'],
+                template: {
+                    top: '<i class="fa fa-hand-spock-o"></i>&nbsp;Races and Species',
+                    item: document.getElementById('multiple-filter-item-template').text,
+                    showMore: '<button class="button"><i class="fa fa-plus"></i>&nbsp;Show more</button>',
+                    showLess: '<button class="button"><i class="fa fa-minus"></i>&nbsp;Show less</button>',
+                },
+                classNames: {
+                    container: 'panel',
+                    top: 'panel-heading',
+                    item: 'panel-block',
+                    showMoreContainer: 'panel-block'
+                }
+            }),
+            ui.widgets.multipleFilter({
+                target: '.multiple-filter-sagas',
+                name: 'sagas',
+                filterField: 'saga',
+                aggregationField: 'saga',
+                applicationType: 8,
+                fetchLimit: 30,
+                viewLimit: 12,
+                sortBy: ['_count', 'desc'],
+                template: {
+                    top: '<i class="fa fa-github"></i>&nbsp;Sagas',
+                    item: document.getElementById('multiple-filter-item-template').text,
+                    showMore: '<button class="button"><i class="fa fa-plus"></i>&nbsp;Show more</button>',
+                    showLess: '<button class="button"><i class="fa fa-minus"></i>&nbsp;Show less</button>',
+                },
+                classNames: {
+                    container: 'panel',
+                    top: 'panel-heading',
+                    item: 'panel-block',
+                    showMoreContainer: 'panel-block'
+                }
+            }),
+            ui.widgets.clearFilters({
+                target: '.clear-filters',
+                template: {
+                    container: '<button class="button"><i class="fa fa-remove"></i>&nbsp;Clear filters</button>'
+                }
+            }),
+            ui.widgets.information({
+                target: '.information',
+                template: {
+                    container: document.getElementById('information-container-template').text
+                }
+            }),
+            ui.widgets.result({
+                target: '.result',
+                itemsPerPage: 40,
+                highlightsEnabled: true,
+                template: {
+                    itemsList: document.getElementById('result-search-tpl').text,
+                }
+            }),
+            ui.widgets.pagination({
+                target: '.pagination',
+                padding: 2,
+                goFirstLast: true,
+                classNames: {
+                    container: 'pagination-list',
+                    item: 'pagination-link',
+                    active: 'is-current',
+                    next: 'pagination-link',
+                    previous: 'pagination-link',
+                    first: 'pagination-link',
+                    last: 'pagination-link',
+                },
+                template: {
+                    previous: '<i class="fa fa-caret-left"></i>',
+                    next: '<i class="fa fa-caret-right"></i>',
+                    first: '<i class="fa fa-caret-left"></i><i class="fa fa-caret-left"></i>',
+                    last: '<i class="fa fa-caret-right"></i><i class="fa fa-caret-right"></i>'
+                }
+            })
+        );
+
+        // Init the magic!
+        ui.init();
+    </script>
+</body>
+</html>
