@@ -70,7 +70,6 @@
             <div class="column is-2">
                 <div class="multiple-filter-featured-char" style="margin-bottom: 1rem"></div>
                 <div class="multiple-filter-supporting-char" style="margin-bottom: 1rem"></div>
-                <div class="multiple-filter-antagonists"></div>
             </div>
             <div class="column">
                 <div class="columns">
@@ -83,7 +82,7 @@
                 </div>
             </div>
             <div class="column is-2">
-                <div class="multiple-filter-sagas" style="margin-bottom: 1rem"></div>
+                <div class="multiple-filter-antagonists" style="margin-bottom: 1rem"></div>
                 <div class="multiple-filter-races-species"></div>
             </div>
         </div>
@@ -231,28 +230,6 @@
                 sortBy: ['_count', 'desc'],
                 template: {
                     top: '<i class="fa fa-hand-spock-o"></i>&nbsp;Races and Species',
-                    item: document.getElementById('multiple-filter-item-template').text,
-                    showMore: '<button class="button"><i class="fa fa-plus"></i>&nbsp;Show more</button>',
-                    showLess: '<button class="button"><i class="fa fa-minus"></i>&nbsp;Show less</button>',
-                },
-                classNames: {
-                    container: 'panel',
-                    top: 'panel-heading',
-                    item: 'panel-block',
-                    showMoreContainer: 'panel-block'
-                }
-            }),
-            ui.widgets.multipleFilter({
-                target: '.multiple-filter-sagas',
-                filterName: 'sagas',
-                filterField: 'saga',
-                aggregationField: 'saga',
-                applicationType: 8,
-                fetchLimit: 30,
-                viewLimit: 12,
-                sortBy: ['_count', 'desc'],
-                template: {
-                    top: '<i class="fa fa-github"></i>&nbsp;Sagas',
                     item: document.getElementById('multiple-filter-item-template').text,
                     showMore: '<button class="button"><i class="fa fa-plus"></i>&nbsp;Show more</button>',
                     showLess: '<button class="button"><i class="fa fa-minus"></i>&nbsp;Show less</button>',
