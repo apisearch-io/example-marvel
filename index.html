@@ -132,10 +132,14 @@
 
     <script type="text/javascript">
         // UI Instance
-        const ui = apisearchUI({
-            appId: '5d1f2b2e966b',
-            indexId: '6c4f259c9124',
-            token: 'a39346d8-1843-46be-817c-461a181e8688',
+        const ui = apisearchUI.create({
+            app_id: 'marvel',
+            index_id: 'comics',
+            token: '', // You should add here your Query-only token
+            options: {
+                endpoint: 'http://localhost:8100',
+                override_queries: true
+            }
         });
 
         // Widgets setup
@@ -150,21 +154,9 @@
                     input: 'input'
                 }
             }),
-        /*
-            ui.widgets.sortBy({
-                target: '.sort-by',
-                classNames: {
-                    container: 'select'
-                },
-                options: [
-                    {name: 'Oldest', value: 'year:asc'},
-                    {name: 'Newest', value: 'year:desc'}
-                ]
-            }),
-        */
             ui.widgets.multipleFilter({
                 target: '.multiple-filter-featured-char',
-                name: 'featured_char',
+                filterName: 'featured_char',
                 filterField: 'featured_chars_id',
                 aggregationField: 'featured_chars_data',
                 applicationType: 8,
@@ -186,7 +178,7 @@
             }),
             ui.widgets.multipleFilter({
                 target: '.multiple-filter-supporting-char',
-                name: 'supporting_char',
+                filterName: 'supporting_char',
                 filterField: 'supporting_chars_id',
                 aggregationField: 'supporting_chars_data',
                 applicationType: 8,
@@ -208,7 +200,7 @@
             }),
             ui.widgets.multipleFilter({
                 target: '.multiple-filter-antagonists',
-                name: 'antagonists',
+                filterName: 'antagonists',
                 filterField: 'antagonists_id',
                 aggregationField: 'antagonists_data',
                 applicationType: 8,
@@ -230,7 +222,7 @@
             }),
             ui.widgets.multipleFilter({
                 target: '.multiple-filter-races-species',
-                name: 'races_species',
+                filterName: 'races_species',
                 filterField: 'races_species_id',
                 aggregationField: 'races_species_data',
                 applicationType: 8,
@@ -252,7 +244,7 @@
             }),
             ui.widgets.multipleFilter({
                 target: '.multiple-filter-sagas',
-                name: 'sagas',
+                filterName: 'sagas',
                 filterField: 'saga',
                 aggregationField: 'saga',
                 applicationType: 8,
@@ -288,6 +280,9 @@
                 target: '.result',
                 itemsPerPage: 40,
                 highlightsEnabled: true,
+                filter: function(query) {
+                    query.setAutoFuzziness();
+                },
                 template: {
                     itemsList: document.getElementById('result-search-tpl').text,
                 }
