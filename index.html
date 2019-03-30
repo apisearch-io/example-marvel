@@ -4,7 +4,7 @@
     <title>Apisearch Marvel example</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.0/css/bulma.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/apisearch-ui/dist/apisearch-ui.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/apisearch-ui@0.2.8/dist/apisearch-ui.min.js"></script>
 
     <!-- custom styles -->
     <style>
@@ -134,7 +134,7 @@
         const ui = apisearchUI.create({
             app_id: 'marvel',
             index_id: 'comics',
-            token: '', // You should add here your Query-only token
+            token: '410806ed-f2c2-8d22-96ea-7fb68026df34', // You should add here your Query-only token
             options: {
                 endpoint: 'http://localhost:8100',
                 override_queries: true
@@ -200,7 +200,7 @@
             ui.widgets.multipleFilter({
                 target: '.multiple-filter-antagonists',
                 filterName: 'antagonists',
-                filterField: 'antagonists_id',
+                filterField: 'antagonists_data_id',
                 aggregationField: 'antagonists_data',
                 applicationType: 8,
                 fetchLimit: 30,
