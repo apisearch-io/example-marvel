@@ -50,9 +50,6 @@
             <!-- Clear filters -->
             <div class="navbar-item clear-filters"></div>
 
-            <!-- Sort by -->
-            <div class="navbar-item sort-by"></div>
-
             <a class="navbar-item is-hidden-desktop-only"
                href="https://github.com/apisearch-io/example-marvel"
                target="_blank"
@@ -95,7 +92,7 @@
                 <div class="card" style="border-radius: .2rem">
                     <div class="card-image">
                         <figure class="image">
-                            <img src="{{metadata.img}}" alt="Placeholder image">
+                            <img src="{{metadata.img}}" alt="Comic image" width="176" height="267">
                         </figure>
                     </div>
                     <div class="card-content" style="padding: .5rem">
@@ -124,6 +121,9 @@
     </script>
 
     <script type="text/template" id="information-container-template">
+        <span class="tag">
+            <i class="fa fa-star"></i> &nbsp; Total {{total_items}}
+        </span>
         <span class="tag is-primary">
             <i class="fa fa-bolt"></i> &nbsp; Found {{total_hits}}!
         </span>
@@ -147,7 +147,7 @@
                 target: '.search',
                 placeholder: 'Search something...',
                 autofocus: true,
-                startSearchOn: 3,
+                startSearchOn: 1,
                 classNames: {
                     container: 'column',
                     input: 'input'
@@ -156,8 +156,7 @@
             ui.widgets.multipleFilter({
                 target: '.multiple-filter-featured-char',
                 filterName: 'featured_char',
-                filterField: 'featured_chars_id',
-                aggregationField: 'featured_chars_data',
+                filterField: 'featured_chars',
                 applicationType: 8,
                 fetchLimit: 30,
                 viewLimit: 12,
@@ -178,8 +177,7 @@
             ui.widgets.multipleFilter({
                 target: '.multiple-filter-supporting-char',
                 filterName: 'supporting_char',
-                filterField: 'supporting_chars_id',
-                aggregationField: 'supporting_chars_data',
+                filterField: 'supporting_chars',
                 applicationType: 8,
                 fetchLimit: 30,
                 viewLimit: 12,
@@ -200,8 +198,7 @@
             ui.widgets.multipleFilter({
                 target: '.multiple-filter-antagonists',
                 filterName: 'antagonists',
-                filterField: 'antagonists_data_id',
-                aggregationField: 'antagonists_data',
+                filterField: 'antagonists',
                 applicationType: 8,
                 fetchLimit: 30,
                 viewLimit: 12,
@@ -222,8 +219,7 @@
             ui.widgets.multipleFilter({
                 target: '.multiple-filter-races-species',
                 filterName: 'races_species',
-                filterField: 'races_species_id',
-                aggregationField: 'races_species_data',
+                filterField: 'races_species',
                 applicationType: 8,
                 fetchLimit: 30,
                 viewLimit: 12,
@@ -260,6 +256,10 @@
                 filter: function(query) {
                     query.setAutoFuzziness();
                 },
+                fields: [
+                    "metadata",
+                    "indexed_metadata",
+                ],
                 template: {
                     itemsList: document.getElementById('result-search-tpl').text,
                 }

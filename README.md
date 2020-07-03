@@ -9,7 +9,7 @@ technologies. The project provides an *in crescendo* set of language
 integration libraries for her users, as well as some third party projects 
 integration bundles, plugins, or javascript widgets.
 
-![Project screenshot](https://raw.githubusercontent.com/apisearch-io/example-marvel/master/screenshot.jpg "Project screenshot")
+![Project screenshot](https://raw.githubusercontent.com/apisearch-io/example-marvel/master/screenshot.png "Project screenshot")
 
 Some first steps for you!
 
