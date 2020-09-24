@@ -2,9 +2,10 @@
 <html>
 <head>
     <title>Apisearch Marvel example</title>
+    <meta charset="UTF-8">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.0/css/bulma.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/apisearch-ui@0.2.9/dist/apisearch-ui.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/apisearch-ui@0.2.17/dist/apisearch-ui.min.js"></script>
 
     <!-- custom styles -->
     <style>
@@ -23,7 +24,60 @@
         .as-pagination__item {
             cursor: pointer;
         }
+
+        .like-layer {
+            height: 100%;
+            width: 100%;
+            position: absolute;
+            text-align: center;
+            top: 0;
+            background-color: rgba(119, 119, 119, .6);
+            opacity: 0;
+        }
+
+        .like-layer:hover {
+            opacity: 1;
+            cursor: pointer;
+        }
+
+        .like-layer .like {
+            margin-top: 105px;
+            font-size: 50px;
+            color: red;
+        }
+
+        .like-layer .like.liked {
+            -webkit-animation-name: cssAnimation;
+            -webkit-animation-duration:0.3s;
+            -webkit-animation-iteration-count: 1;
+            -webkit-animation-timing-function: ease;
+            -webkit-animation-fill-mode: forwards;
+        }
+
+        @-webkit-keyframes cssAnimation {
+            0% {
+                -webkit-transform: rotate(0deg) scale(1) skew(0deg);
+                opacity: 1;
+            }
+            100% {
+                -webkit-transform: rotate(0deg) scale(2) skew(0deg) translateY(-100px);
+                opacity: .0;
+            }
+        }
     </style>
+
+    <script>
+        function like(object)
+        {
+            object.classList.add('liked');
+            object.addEventListener("webkitAnimationEnd", function(){likeFinished(object)}, false);
+        }
+
+        function likeFinished(object)
+        {
+            object.classList.remove('liked');
+        }
+    </script>
 </head>
 
 <body>
@@ -92,7 +146,8 @@
                 <div class="card" style="border-radius: .2rem">
                     <div class="card-image">
                         <figure class="image">
-                            <img src="{{metadata.img}}" alt="Comic image" width="176" height="267">
+                            <img src="https://vignette.wikia.nocookie.net/marveldatabase/images/{{metadata.img}}" alt="Comic image" width="176" height="267">
+                            <span class="like-layer"><span class="fa fa-heart like" onclick="like(this); {{click}};"></span></span>
                         </figure>
                     </div>
                     <div class="card-content" style="padding: .5rem">
@@ -130,13 +185,15 @@
     </script>
 
     <script type="text/javascript">
+
         // UI Instance
         const ui = apisearchUI.create({
-            app_id: 'marvel',
-            index_id: 'comics',
-            token: '410806ed-f2c2-8d22-96ea-7fb68026df34', // You should add here your Query-only token
+            app_id: 'as-29be77d7-2f64-4522',
+            index_id: 'eu1-406f4e7a-76a9-418b',
+            token: 'eu1-c5c313a0-8dbb-4f83-96e5-da7e43fabccf', // You should add here your Query-only token
+            user_id: "123",
             options: {
-                endpoint: 'http://localhost:8100',
+                endpoint: 'https://eu1.apisearch.io',
                 override_queries: true
             }
         });
@@ -147,7 +204,7 @@
                 target: '.search',
                 placeholder: 'Search something...',
                 autofocus: true,
-                startSearchOn: 1,
+                startSearchOn: 0,
                 classNames: {
                     container: 'column',
                     input: 'input'
